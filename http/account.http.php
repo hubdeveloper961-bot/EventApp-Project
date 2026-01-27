@@ -1,22 +1,28 @@
 <?php
+header("Content-Type: application/json; charset=UTF-8");
 require_once __DIR__."/../engine/db.engine.php";
 require_once __DIR__."/../services/account.service.php";
 
 $db = DBEngine::open();
 $action = $_GET['action'] ?? '';
 
-if($action=='register'){
-    echo AccountService::register(
-        $db,$_GET['name'],$_GET['email'],$_GET['password'],$_GET['role']
-    );
+if($action == 'register'){
+    // Hakikisha vigezo vyote vipo
+    $name = $_GET['name'] ?? '';
+    $email = $_GET['email'] ?? '';
+    $password = $_GET['password'] ?? '';
+    $role = $_GET['role'] ?? 'member';
+
+    echo AccountService::register($db, $name, $email, $password, $role);
 }
 
-if($action=='login'){
-    echo AccountService::login(
-        $db,$_GET['email'],$_GET['password']
-    );
+elseif($action == 'login'){
+    $email = $_GET['email'] ?? '';
+    $password = $_GET['password'] ?? '';
+
+    echo AccountService::login($db, $email, $password);
 }
 
-if($action=='logout'){
+elseif($action == 'logout'){
     AccountService::logout();
 }
